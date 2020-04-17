@@ -1,7 +1,7 @@
 import ROOT
 #import '/u6/afwebb/script/plotting/AtlasStyle.C'
 
-texfile = open("data_plots/plots.tex", "w")
+texfile = open("data_plots/badAB106/plots.tex", "w")
 
 print >>texfile, ('\\documentclass[hyperref={pdfpagelayout=SinglePage}]{beamer}\\usetheme{Warsaw}\\usepackage{euler}\\usepackage{pgf}\\usecolortheme{crane}\\usefonttheme{serif}\\useoutertheme{infolines}\\usepackage{epstopdf}\\usepackage{xcolor}\\usepackage{multicol}\\title{Plots}')
 print >>texfile, ('\\begin{document}')
@@ -17,8 +17,8 @@ class Variable:
 
 def plot():
 
-    #newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/Data/data_comb.root")
-    newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/Data/small_cern_ttW/data_comb.root")
+    newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/Data/data_comb.root")
+    #newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/Data/small_cern_ttW/data_comb.root")
     nomNewA = newFileA.Get("nominal")
 
     #newFileD = ROOT.TFile.Open("/data_ceph/afwebb/datasets/v7_WZ/GN2/Nominal/mc16d/361601.root")
@@ -45,7 +45,7 @@ def plot():
     iso106 = ''
     iso106+= '&&( (abs(lep_ID_0)==11 && lep_isolationFCLoose_0&& lep_promptLeptonVeto_TagWeight_0<-0.7 &&lep_ambiguityType_0==0) || (abs(lep_ID_0)==13 && lep_isMedium_0 && lep_isolationFCLoose_0 && lep_promptLeptonVeto_TagWeight_0<-0.5 && lep_ambiguityType_0 == 0) )'
     iso106+= '&&( (abs(lep_ID_1)==11 && lep_isolationFCLoose_1&& lep_promptLeptonVeto_TagWeight_1<-0.7 &&lep_ambiguityType_1==0) || (abs(lep_ID_1)==13 && lep_isMedium_1 && lep_isolationFCLoose_1 && lep_promptLeptonVeto_TagWeight_1<-0.5 && lep_ambiguityType_1 == 0) )'
-    iso106+= '&&( (abs(lep_ID_2)==11 && lep_isolationFCLoose_2&& lep_promptLeptonVeto_TagWeight_2<-0.7 &&lep_ambiguityType_2==0) || (abs(lep_ID_2)==13 && lep_isMedium_2 && lep_isolationFCLoose_2 && lep_promptLeptonVeto_TagWeight_2<-0.5 && lep_ambiguityType_2 == 0) )&&met_met>20e3'
+    iso106+= '&&( (abs(lep_ID_2)==11 && lep_isolationFCLoose_2&& lep_promptLeptonVeto_TagWeight_2<-0.7 &&lep_ambiguityType_2==0) || (abs(lep_ID_2)==13 && lep_isMedium_2 && lep_isolationFCLoose_2 && lep_promptLeptonVeto_TagWeight_2<-0.5 && lep_ambiguityType_2 == 0) )&&MET_RefFinal_et>20e3'#&&met_met>20e3'
     #iso106+= '&&RunYear<2018'
     #iso106+= electronCut
     #iso106+= "&&(lep_isolationFCLoose_0 && lep_isolationFCLoose_1 && lep_isolationFCLoose_2 )"
@@ -67,8 +67,8 @@ def plot():
     varList.append(Variable("RunYear",4,2015,2019))
 
     #varList.append(Variable("passTrigger",2,0,2))
-    varList.append(Variable("nJets_OR_DL1_70",5,0,5))
-    varList.append(Variable("nJets_OR",10,0,10))
+    #varList.append(Variable("nJets_OR_DL1_70",5,0,5))
+    #varList.append(Variable("nJets_OR",10,0,10))
     varList.append(Variable("Mll01",30,0,150000))
     varList.append(Variable("Mll02",30,0,150000))
     varList.append(Variable("Mll12",30,0,150000))
@@ -121,7 +121,7 @@ def plot():
         pad1.SetBottomMargin(0);
         pad1.Draw();
         pad1.cd();
-        #pad1.SetLogy()
+        pad1.SetLogy()
         ROOT.gStyle.SetOptStat(0);
 
         newHist = ROOT.TH1F('newHist', 'newHist', var.nbins,var.nmin, var.nmax)
@@ -165,7 +165,7 @@ def plot():
         leg.AddEntry(newHist, 'AB 106', 'l')
         leg.AddEntry(oldHist, 'AT 36', 'l')
 
-        hist_stack.Draw("nostack")
+        hist_stack.Draw("nostack, e")
         hist_stack.GetXaxis().SetTitle(var.name)
         c1.Modified()
         leg.Draw()
@@ -199,7 +199,7 @@ def plot():
         line = ROOT.TLine(var.nmin, 1, var.nmax, 1)
         line.Draw()
         
-        c1.SaveAs('data_plots/'+var.name+'.pdf')
+        c1.SaveAs('data_plots/badAB106/'+var.name+'.pdf')
 
         if icount % 4 == 1:
             print >>texfile, ('\\frame{')

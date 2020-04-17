@@ -103,7 +103,7 @@ for e in nom:
     w = lep+met
     
     jet = LorentzVector()
-    jet.SetPtEtaPhiE( e.lead_jetPt, e.lead_jetEta, e.lead_jetPhi, e.lead_jetE )
+    jet.SetPtEtaPhiE( e.jets_Pt_0, e.jets_Eta_0, e.jets_Phi_0, e.jets_E_0 )
     
     top = LorentzVector()
     

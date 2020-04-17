@@ -18,7 +18,7 @@ class Variable:
 def plot():
 
     #newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/v7_WZ/GN2/Nominal/mc16d/364253.root")
-    newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/Nominal/mc16e/364253.root")
+    newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/Nominal/mc16e/364253.root")
     #newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/test/mc16d/brokenMuons364253.root") 
     #newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/Data/data15.root")
     nomNewA = newFileA.Get("nominal")
