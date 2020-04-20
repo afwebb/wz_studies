@@ -72,7 +72,7 @@ for idx in range(nEntries):
     k['Mll12'] = nom.Mll12
 
     k['jets_Pt_0'] = nom.jets_Pt_0
-    k['jets_score_DL1r_0'] = nom.jets_score_DL1r_0 
+    k['nJets_OR_DL1r_60'] = nom.nJets_OR_DL1r_60 
 
     k['nJets_OR'] = nom.nJets_OR
 

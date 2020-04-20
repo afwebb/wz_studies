@@ -36,8 +36,8 @@ for c in inDF:
 
     elif 'MV2c10' in c:
         r = (-1, 1)
-    elif 'DL1r' in c:
-        r = (-7, 15)
+    #elif 'DL1r' in c:
+    #    r = (-7, 15)
     elif 'ID' in c:
         r = (-16, 16)
     elif 'Phi' in c or 'phi' in c:
