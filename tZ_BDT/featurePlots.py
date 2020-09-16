@@ -44,7 +44,7 @@ for c in inDF:
         r = (-3.5, 3.5)
     elif 'Eta' in c:
         r = (-3.5, 3.5)
-    elif 'dR' in c:
+    elif 'dR' in c or 'DeltaR' in c:
         r = (0, 6)
     elif 'DR' in c:
         r = (0,6)

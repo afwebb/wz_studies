@@ -94,13 +94,20 @@ def run_top_mass(inputPath):
     try:
         nom.GetEntries()
     except:
+        print('failed for '+inputPath )
         return 0
 
-    if nom.GetEntries() == 0:
+    try:                                                                                                              
+        nom.Mll01
+    except:
+        print('failed for '+inputPath)
+        return 0
+
+    if nom.GetEntries()==0:
         return 0
 
     if hasattr(nom, "topMassReco"):
-        print('already there')
+        print('already there', inputPath)
         return 0
 
     nEntries = nom.GetEntries()
@@ -122,7 +129,7 @@ def run_top_mass(inputPath):
         w = lep+met
     
         jet = LorentzVector()
-        jet.SetPtEtaPhiE( nom.jets_Pt_0, nom.jets_Eta_0, nom.jets_Phi_0, nom.jets_E_0 )
+        jet.SetPtEtaPhiE( nom.jet_Pt_0, nom.jet_Eta_0, nom.jet_Phi_0, nom.jet_E_0 )
         
         top = LorentzVector()
         

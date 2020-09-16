@@ -7,17 +7,18 @@ print >>texfile, ('\\documentclass[hyperref={pdfpagelayout=SinglePage}]{beamer}\
 print >>texfile, ('\\begin{document}')
 
 class Variable:
-    def __init__(self, name, nbins, nmin, nmax, logy = True):
+    def __init__(self, name, nameOld, nbins, nmin, nmax, logy = True):
         self.name = name
-        #self.nameOld = nameOld
+        self.nameOld = nameOld
         self.nbins = nbins
         self.nmin = nmin
         self.nmax = nmax
         self.logy = logy
 
-def plot():
+def plot(i):
 
-    newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/Data/data_comb.root")
+    #newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/v3/data/topo_comb.root")
+    newFileA = ROOT.TFile.Open("/data/afwebb/datasets/WZ_ab127/Data/data_comb.root")
     #newFileA = ROOT.TFile.Open("/data_ceph/afwebb/datasets/ab106_WZ/Data/small_cern_ttW/data_comb.root")
     nomNewA = newFileA.Get("nominal")
 
@@ -33,26 +34,20 @@ def plot():
 
     wNew = 1 #newFile.Get("sumWeights").Get("Count").Integral()
     wOld = 1 #oldFile.Get("sumWeights").Get("Count").Integral()
-
-    sr = "trilep_type&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))&&nJets_OR>0&&abs(Mlll012-91.2e3)>10e3&&lep_Pt_3==0 && nJets_OR<3"
-    #sr = "passEventCleaning&&trilep_type&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&(lep_isTrigMatch_0||lep_isTrigMatch_1||lep_isTrigMatch_2||matchDLTll01||matchDLTll02||matchDLTll12)&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))&&nJets_OR>0&&abs(Mlll012-91.2e3)>10e3&&best_Z_other_MtLepMet>30e3&&MET_RefFinal_et>20e3&&lep_Pt_3==0"
-    #sr+="&&abs(lep_ID_0)==11 && abs(lep_ID_1)==11 && abs(lep_ID_2)==11"
-    #sr = "passEventCleaning&&trilep_type>0&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&(lep_isTrigMatch_0||lep_isTrigMatch_1||lep_isTrigMatch_2||matchDLTll01||matchDLTll02||matchDLTll12)&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 )))&&nJets_OR_T>0&&abs(Mlll012-91.2e3)>10e3&&best_Z_other_MtLepMet>30e3&&MET_RefFinal_et>20e3&&lep_Pt_3==0 && nJets_OR_T<3"
-    #iso106 = "&&((abs(lep_ID_0)==11 && lep_isolationFCLoose_0 && lep_isTightLH_0 && lep_promptLeptonVeto_TagWeight_0<-0.7 && lep_ambiguityType_0 == 0)||(abs(lep_ID_0)==13 && lep_isolationFCLoose_0 && lep_isMedium_0 && lep_promptLeptonVeto_TagWeight_0<-0.5 && lep_ambiguityType_0 == 0))&&((abs(lep_ID_1)==11 && lep_isolationFCLoose_1 && lep_isTightLH_1 && lep_promptLeptonVeto_TagWeight_1<-0.7 && lep_ambiguityType_1 == 0)||(abs(lep_ID_1)==13 && lep_isolationFCLoose_1 && lep_isMedium_1 && lep_promptLeptonVeto_TagWeight_1<-0.5&& lep_ambiguityType_1 == 0))&&((abs(lep_ID_2)==11 && lep_isolationFCLoose_2 && lep_isTightLH_2 && lep_promptLeptonVeto_TagWeight_2<-0.7 && lep_ambiguityType_2 == 0)||(abs(lep_ID_2)==13 && lep_isolationFCLoose_2 && lep_isMedium_2 && lep_promptLeptonVeto_TagWeight_2<-0.5 && lep_ambiguityType_2 == 0))"
+    
+    sr = "trilep_type&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))&&nJets_OR>0&&abs(Mlll012-91.2e3)>10e3"# && nJets_OR<3"
+    #sr = "trilep_type>0"
+    #sr+="&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)"
+    #sr+="&&(lep_Pt_0>100e3&&(lep_Pt_1>100e3||lep_Pt_2>100e3))"
+    sr+="&&(lep_isTrigMatch_0||lep_isTrigMatch_1||lep_isTrigMatch_2)"
+    #sr+="&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))"
+    #sr+="&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))"
+    #sr+="&&nJets_OR>0&&abs(Mlll012-91.2e3)>10e3&&nJets_OR<3"
+    #sr+="&&trilep_type=="+i
+    iso106 = "&&( (abs(lep_ID_0)==11 && lep_isolationFCLoose_0&& lep_promptLeptonImprovedVeto_TagWeight_0<-0.3 &&lep_ambiguityType_0==0) || (abs(lep_ID_0)==13 && lep_isMedium_0 && lep_isolationFCLoose_0 && lep_promptLeptonImprovedVeto_TagWeight_0<-0.3 && lep_ambiguityType_0 == 0) )&&( (abs(lep_ID_1)==11 && lep_isolationFCLoose_1&& lep_promptLeptonImprovedVeto_TagWeight_1<-0.3 &&lep_ambiguityType_1==0) || (abs(lep_ID_1)==13 && lep_isMedium_1 && lep_isolationFCLoose_1 && lep_promptLeptonImprovedVeto_TagWeight_1<-0.3 && lep_ambiguityType_1 == 0) )&&( (abs(lep_ID_2)==11 && lep_isolationFCLoose_2&& lep_promptLeptonImprovedVeto_TagWeight_2<-0.3 &&lep_ambiguityType_2==0) || (abs(lep_ID_2)==13 && lep_isMedium_2 && lep_isolationFCLoose_2 && lep_promptLeptonImprovedVeto_TagWeight_2<-0.3 && lep_ambiguityType_2 == 0) )&&met_met>20e3"
     #iso36 = "&&((abs(lep_ID_0)==11 && lep_isolationFixedCutLoose_0 && lep_isTightLH_0 && lep_promptLeptonVeto_TagWeight_0<-0.7 && lep_ambiguityType_0 == 0)||(abs(lep_ID_0)==13 && lep_isolationFixedCutLoose_0 && lep_isMedium_0 && lep_promptLeptonVeto_TagWeight_0<-0.5 && lep_ambiguityType_0 == 0))&&((abs(lep_ID_1)==11 && lep_isolationFixedCutLoose_1 && lep_isTightLH_1 && lep_promptLeptonVeto_TagWeight_1<-0.7 && lep_ambiguityType_1 == 0)||(abs(lep_ID_1)==13 && lep_isolationFixedCutLoose_1 && lep_isMedium_1 && lep_promptLeptonVeto_TagWeight_1<-0.5&& lep_ambiguityType_1 == 0))&&((abs(lep_ID_2)==11 && lep_isolationFixedCutLoose_2 && lep_isTightLH_2 && lep_promptLeptonVeto_TagWeight_2<-0.7 && lep_ambiguityType_2 == 0)||(abs(lep_ID_2)==13 && lep_isolationFixedCutLoose_2 && lep_isMedium_2 && lep_promptLeptonVeto_TagWeight_2<-0.5 && lep_ambiguityType_2 == 0))"
     #iso106 = "&&((abs(lep_ID_0)==11 && lep_isolationFCLoose_0 && lep_isTightLH_0 && lep_promptLeptonVeto_TagWeight_0<0.0 && lep_ambiguityType_0 == 0)||(abs(lep_ID_0)==13 && lep_isolationFCLoose_0 ))&&((abs(lep_ID_1)==11 && lep_isolationFCLoose_1 && lep_isTightLH_1 && lep_promptLeptonVeto_TagWeight_1<0.0 && lep_ambiguityType_1 == 0)||(abs(lep_ID_1)==13 && lep_isolationFCLoose_1))&&((abs(lep_ID_2)==11 && lep_isolationFCLoose_2 && lep_isTightLH_2 && lep_promptLeptonVeto_TagWeight_2<0.0 && lep_ambiguityType_2 == 0)||(abs(lep_ID_2)==13 && lep_isolationFCLoose_2))"
-    electronCut = "&&(lep_isolationFCLoose_0 && lep_isolationFCLoose_1 && lep_isolationFCLoose_2 )&&(lep_promptLeptonVeto_TagWeight_0<0.7 && lep_promptLeptonVeto_TagWeight_1<0.7 && lep_promptLeptonVeto_TagWeight_2<0.7)&&(lep_ambiguityType_0==0 && lep_ambiguityType_1==0 && lep_ambiguityType_2 == 0)"
-    iso106 = ''
-    iso106+= '&&( (abs(lep_ID_0)==11 && lep_isolationFCLoose_0&& lep_promptLeptonVeto_TagWeight_0<-0.7 &&lep_ambiguityType_0==0) || (abs(lep_ID_0)==13 && lep_isMedium_0 && lep_isolationFCLoose_0 && lep_promptLeptonVeto_TagWeight_0<-0.5 && lep_ambiguityType_0 == 0) )'
-    iso106+= '&&( (abs(lep_ID_1)==11 && lep_isolationFCLoose_1&& lep_promptLeptonVeto_TagWeight_1<-0.7 &&lep_ambiguityType_1==0) || (abs(lep_ID_1)==13 && lep_isMedium_1 && lep_isolationFCLoose_1 && lep_promptLeptonVeto_TagWeight_1<-0.5 && lep_ambiguityType_1 == 0) )'
-    iso106+= '&&( (abs(lep_ID_2)==11 && lep_isolationFCLoose_2&& lep_promptLeptonVeto_TagWeight_2<-0.7 &&lep_ambiguityType_2==0) || (abs(lep_ID_2)==13 && lep_isMedium_2 && lep_isolationFCLoose_2 && lep_promptLeptonVeto_TagWeight_2<-0.5 && lep_ambiguityType_2 == 0) )&&MET_RefFinal_et>20e3'#&&met_met>20e3'
-    #iso106+= '&&RunYear<2018'
-    #iso106+= electronCut
-    #iso106+= "&&(lep_isolationFCLoose_0 && lep_isolationFCLoose_1 && lep_isolationFCLoose_2 )"
-    #iso106+="&&(lep_isMedium_0 && lep_isMedium_1 && lep_isMedium_2 )"
-    #iso106+="&&(lep_isTightLH_0 && lep_isTightLH_1 && lep_isTightLH_2 )"
-    #iso106+="&&(lep_promptLeptonVeto_TagWeight_0<0.7 && lep_promptLeptonVeto_TagWeight_1<0.7 && lep_promptLeptonVeto_TagWeight_2<0.9)"
-    #iso106+="&&(lep_ambiguityType_0==0 && lep_ambiguityType_1==0 && lep_ambiguityType_2 == 0)"
+    electronCut = ""#&&(lep_isolationFCLoose_0 && lep_isolationFCLoose_1 && lep_isolationFCLoose_2 )&&(lep_promptLeptonVeto_TagWeight_0<0.7 && lep_promptLeptonVeto_TagWeight_1<0.7 && lep_promptLeptonVeto_TagWeight_2<0.7)&&(lep_ambiguityType_0==0 && lep_ambiguityType_1==0 && lep_ambiguityType_2 == 0)"
     iso36 = ''
     iso36+='&&MET_RefFinal_et>20e3'
     #iso36 += "&&((abs(lep_ID_0)==11 && lep_isolationFixedCutLoose_0 && lep_isTightLH_0 && lep_promptLeptonVeto_TagWeight_0<-0.7 && lep_ambiguityType_0 == 0)||(abs(lep_ID_0)==13 && lep_isolationFixedCutLoose_0 && lep_isMedium_0 && lep_promptLeptonVeto_TagWeight_0<-0.5 && lep_ambiguityType_0 == 0))&&((abs(lep_ID_1)==11 && lep_isolationFixedCutLoose_1 && lep_isTightLH_1 && lep_promptLeptonVeto_TagWeight_1<-0.7 && lep_ambiguityType_1 == 0)||(abs(lep_ID_1)==13 && lep_isolationFixedCutLoose_1 && lep_isMedium_1 && lep_promptLeptonVeto_TagWeight_1<-0.5&& lep_ambiguityType_1 == 0))&&((abs(lep_ID_2)==11 && lep_isolationFixedCutLoose_2 && lep_isTightLH_2 && lep_promptLeptonVeto_TagWeight_2<-0.7 && lep_ambiguityType_2 == 0)||(abs(lep_ID_2)==13 && lep_isolationFixedCutLoose_2 && lep_isMedium_2 && lep_promptLeptonVeto_TagWeight_2<-0.5 && lep_ambiguityType_2 == 0))"
@@ -60,46 +55,47 @@ def plot():
 
 
     varList = []
-    varList.append(Variable("trilep_type",5,0,5))
-    #varList.append(Variable("RunNumber",1000,355000,360000))
+    varList.append(Variable("nJets_OR_DL1r_70","nJets_OR_T_MV2c10_70",3,0,3))
+    #varList.append(Variable("nJets_OR_MV2c10_70","nJets_OR_T_MV2c10_70",3,0,3))
+    #varList.append(Variable("jets_Pt_0","lead_jetPt",30,0,300000))
+    #varList.append(Variable("nJets_OR","nJets_OR",8,0,8))
 
-    #varList.append(Variable("is3L",2,0,2))
-    varList.append(Variable("RunYear",4,2015,2019))
+    varList.append(Variable("trilep_type","trilep_type",5,0,5))
+    varList.append(Variable("RunYear","newRunYear",4,2015,2019))
 
-    #varList.append(Variable("passTrigger",2,0,2))
-    #varList.append(Variable("nJets_OR_DL1_70",5,0,5))
-    #varList.append(Variable("nJets_OR",10,0,10))
-    varList.append(Variable("Mll01",30,0,150000))
-    varList.append(Variable("Mll02",30,0,150000))
-    varList.append(Variable("Mll12",30,0,150000))
-    varList.append(Variable("Mlll012",30,0,500000))
-    varList.append(Variable("MET_RefFinal_et",30,0,200000))
-    varList.append(Variable("best_Z_Mll",30,0,150000))
-    #varList.append(Variable("best_Z_other_Mll",30,0,150000))
-    varList.append(Variable("lead_jetPt",30,0,300000))
-    varList.append(Variable("lep_Pt_0",30,0,200000))
+    varList.append(Variable("passTrigger","passTrigger",2,0,2))
+    varList.append(Variable("Mll01","Mll01",30,0,150000))
+    varList.append(Variable("Mll02","Mll02",30,0,150000))
 
-    varList.append(Variable("lep_Pt_1",30,0,200000))                                                                  
-    varList.append(Variable("lep_Pt_2",30,0,200000))
+    #varList.append(Variable("Mll12",30,0,150000))
+    #varList.append(Variable("Mlll012",30,0,500000))
+    varList.append(Variable("met_met","MET_RefFinal_et",30,0,200000))
+    varList.append(Variable("lep_Pt_0","lep_Pt_0",30,0,200000))
 
-    varList.append(Variable("best_Z_other_MtLepMet",30,0,300000))
-    varList.append(Variable("lep_ID_0",30,-15,15))
-    varList.append(Variable("lep_ID_1",30,-15,15))
-    varList.append(Variable("lep_ID_2",30,-15,15))
-    varList.append(Variable("lep_isTrigMatch_0",2,0,2))
-    varList.append(Variable("lep_isTrigMatch_1",2,0,2))
-    varList.append(Variable("lep_isTrigMatch_2",2,0,2))
-    varList.append(Variable("lep_isTrigMatchDLT_0",2,0,2))
-    varList.append(Variable("lep_isTrigMatchDLT_1",2,0,2))
-    varList.append(Variable("lep_isTrigMatchDLT_2",2,0,2))
-    varList.append(Variable("lep_isMedium_1",2,0,2))
-    varList.append(Variable("lep_isTight_1",2,0,2))                                                                     
-    varList.append(Variable("lep_isolationFCTight_1",2,0,2))                                                  
-    varList.append(Variable("lep_isolationLoose_1",2,0,2))
-    varList.append(Variable("lep_isolationLooseTrackOnly_1",2,0,2))
-    varList.append(Variable("lep_isolationGradient_1",2,0,2))
-    varList.append(Variable("lep_isolationTightTrackOnly_1",2,0,2))
-    varList.append(Variable("lep_isolationFCLoose_1",2,0,2))
+    varList.append(Variable("lep_Pt_1","lep_Pt_1",30,0,200000))                                                                  
+    varList.append(Variable("lep_Pt_2","lep_Pt_2",30,0,200000))
+    
+    varList.append(Variable("best_Z_other_MtLepMet","best_Z_other_MtLepMet",30,0,300000))
+    
+    varList.append(Variable("lep_ID_0","lep_ID_0",30,-15,15))
+    varList.append(Variable("lep_ID_1","lep_ID_1",30,-15,15))
+    varList.append(Variable("lep_ID_2","lep_ID_2",30,-15,15))
+    varList.append(Variable("lep_isTrigMatch_0","lep_isTrigMatch_0",2,0,2))
+    varList.append(Variable("lep_isTrigMatch_1","lep_isTrigMatch_1",2,0,2))
+    varList.append(Variable("lep_isTrigMatch_2","lep_isTrigMatch_2",2,0,2))
+    varList.append(Variable("lep_isTrigMatchDLT_0","lep_isTrigMatchDLT_0",2,0,2))
+    varList.append(Variable("lep_isTrigMatchDLT_1","lep_isTrigMatchDLT_1",2,0,2))
+    varList.append(Variable("lep_isTrigMatchDLT_2","lep_isTrigMatchDLT_2",2,0,2))
+    
+    #varList.append(Variable("lep_isMedium_1",2,0,2))
+    #varList.append(Variable("lep_isTight_1",2,0,2))                                                                     
+    #varList.append(Variable("lep_isolationFCTight_1",2,0,2))                                                  
+    #varList.append(Variable("lep_isolationLoose_1",2,0,2))
+    #varList.append(Variable("lep_isolationLooseTrackOnly_1",2,0,2))
+    #varList.append(Variable("lep_isolationGradient_1",2,0,2))
+    #varList.append(Variable("lep_isolationTightTrackOnly_1",2,0,2))
+    #varList.append(Variable("lep_isolationFCLoose_1",2,0,2))
+
     #varList.append(Variable("(10*nJets_OR_T_MV2c10_70+((nJets_OR_T)*(nJets_OR_T<9)+9*(nJets_OR_T>=9)))",30,0,30))
     #varList.append(Variable("Mll03",30,0,150000))
     #varList.append(Variable("Mll13",30,0,150000))
@@ -122,11 +118,9 @@ def plot():
         pad1.Draw();
         pad1.cd();
         pad1.SetLogy()
-        ROOT.gStyle.SetOptStat(0);
-
+        #ROOT.gStyle.SetOptStat(0);
         newHist = ROOT.TH1F('newHist', 'newHist', var.nbins,var.nmin, var.nmax)
         #newHistD = ROOT.TH1F('newHistD', 'newHistD', var.nbins,var.nmin, var.nmax)
-
         #nomNewA.Draw(var.name+">>newHist", sr);
         nomNewA.Draw(var.name+">>newHist", sr+iso106);
         #newHist.Add(newHistD)
@@ -135,10 +129,10 @@ def plot():
         oldHist = ROOT.TH1F('oldHist', 'oldHist', var.nbins,var.nmin, var.nmax)
         oldHistD = ROOT.TH1F('oldHistD', 'oldHistD', var.nbins,var.nmin, var.nmax)
 
-        #nomOldA.Draw(var.name+">>oldHist", sr)
-        #nomOldD.Draw(var.name+">>oldHistD", sr);
-        nomOldA.Draw(var.name+">>oldHist", sr+iso36)
-        nomOldD.Draw(var.name+">>oldHistD", sr+iso36);
+        #nomOldA.Draw(var.nameOld+">>oldHist", sr)
+        #nomOldD.Draw(var.nameOld+">>oldHistD", sr);
+        nomOldA.Draw(var.nameOld+">>oldHist", sr+iso36)
+        nomOldD.Draw(var.nameOld+">>oldHistD", sr+iso36);
         oldHist.Add(oldHistD)
         oldHist.SetLineColor(4)
 
@@ -146,8 +140,8 @@ def plot():
         print "Old yield: "+str(oldHist.Integral())
         
         #title = oldHist.GetTitle()
-        oldHist.GetXaxis().SetTitle(var.name)
-        newHist.GetXaxis().SetTitle(var.name)
+        oldHist.GetXaxis().SetTitle(var.name+'/'+var.nameOld)
+        newHist.GetXaxis().SetTitle(var.name+'/'+var.nameOld)
         
         oldHist.SetTitle("")
         newHist.SetTitle("")
@@ -198,8 +192,9 @@ def plot():
 
         line = ROOT.TLine(var.nmin, 1, var.nmax, 1)
         line.Draw()
-        
-        c1.SaveAs('data_plots/badAB106/'+var.name+'.pdf')
+
+        #c1.SaveAs('data_plots/trilep/'+var.name+'Trilep'+i+'.pdf')
+        c1.SaveAs('data_plots/'+var.name+'.pdf')
 
         if icount % 4 == 1:
             print >>texfile, ('\\frame{')
@@ -210,13 +205,17 @@ def plot():
             print >>texfile, '}\n'
 
         icount += 1
+        
 
     if icount %4 != 1:
         print >>texfile, '}\n'
 
 #for level in ["reco", "truth"]:
 
-plot()
+#for i in ['1','2','3','4']:
+#    plot(i)
+
+plot('4')
 
 print >>texfile, '\end{document}'
 texfile.close()

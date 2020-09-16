@@ -39,8 +39,8 @@ for idx in range(nEntries):
     nom.GetEntry(idx)
 
     #if nom.trilep_type==0: continue
-    if nom.nJets_OR>2: continue
-    if nom.nJets_OR_DL1_70==0: continue
+    if nom.nJets_OR!=1: continue
+    if nom.nJets_OR_DL1_60==0: continue
     #if nom.total_charge!=3: continue
     #if nom.lep_Pt_0<10000: continue
     #if nom.lep_Pt_1<20000: continue
@@ -50,13 +50,17 @@ for idx in range(nEntries):
 
     if nom.mcChannelNumber == 364253:
         k['signal'] = 1
-    else:
+    elif nom.mcChannelNumber == 410560:
         k['signal'] = 0
-
+    elif sum([x for x in nom.hasTop]):
+        k['signal'] = 0
+    else:
+        continue
+        #k['signal'] = 1
 
     k["topMassReco"] = nom.topMassReco
 
-    k['best_Z_other_MtLepMet'] = nom.best_Z_other_MtLepMet
+    #k['best_Z_other_MtLepMet'] = nom.best_Z_other_MtLepMet
     k['MET'] = nom.met_met
 
     k['lep_Pt_0'] = nom.lep_Pt_0
@@ -71,10 +75,16 @@ for idx in range(nEntries):
     k['Mll02'] = nom.Mll02
     k['Mll12'] = nom.Mll12
 
-    k['jets_Pt_0'] = nom.jets_Pt_0
-    k['nJets_OR_DL1r_60'] = nom.nJets_OR_DL1r_60 
+    k['jet_Pt_0'] = nom.jet_Pt_0
+    #k['nJets_OR_DL1r_60'] = nom.nJets_OR_DL1r_60 
 
-    k['nJets_OR'] = nom.nJets_OR
+    k["DeltaR_min_lep_jet"] = nom.DeltaR_min_lep_jet
+    k['minDeltaR_LJ_0'] = nom.minDeltaR_LJ_0
+    k['minDeltaR_LJ_1'] = nom.minDeltaR_LJ_1 
+    k['minDeltaR_LJ_2'] = nom.minDeltaR_LJ_2 
+    k["MtLepMet"] = nom.MtLepMet
+
+    #k['nJets_OR'] = nom.nJets_OR
 
     k['HT'] = nom.HT
 

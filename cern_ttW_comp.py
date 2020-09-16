@@ -24,18 +24,21 @@ def plot(newFileName, oldFileName, outputName):
     oldFileA = ROOT.TFile.Open(oldFileName)
     nomOldA = oldFileA.Get("nominal")
 
-    srOld = "(36207.6*(RunYear==2015||RunYear==2016)+44307.4*(newRunYear==2017)+58450.1*(newRunYear==2018))*scale_nom*pileupEventWeight_090*MV2c10_Continuous_EventWeight*(trilep_type>0&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&(lep_isTrigMatch_0||lep_isTrigMatch_1||lep_isTrigMatch_2||matchDLTll01||matchDLTll02||matchDLTll12)&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))&&nJets_OR>0&&abs(Mlll012-91.2e3)>10e3)"#&&best_Z_other_MtLepMet>10e3&&MET_RefFinal_et>20e3&&lep_Pt_3==0)"
+    #srOld = "(36207.6*(RunYear==2015||RunYear==2016)+44307.4*(newRunYear==2017)+58450.1*(newRunYear==2018))*scale_nom*pileupEventWeight_090*MV2c10_Continuous_EventWeight*(trilep_type>0&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&(matchDLTll01||matchDLTll02||matchDLTll12)&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))&&nJets_OR>0)"#&&abs(Mlll012-91.2e3)>10e3&&nJets_OR<3)"#&&best_Z_other_MtLepMet>10e3&&MET_RefFinal_et>20e3&&lep_Pt_3==0)"
+    srOld = "(36207.6*(RunYear==2015||RunYear==2016))*scale_nom*pileupEventWeight_090*MV2c10_Continuous_EventWeight*(trilep_type>0&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&(matchDLTll01||matchDLTll02||matchDLTll12)&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))&&nJets_OR>0)"#&&abs(Mlll012-91.2e3)>10e3&&nJets_OR<3)"#&&best_Z_other_MtLepMet>10e3&&MET_RefFinal_et>20e3&&lep_Pt_3==0)"
 
-    srNew = "weight*(trilep_type>0&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&(lep_isTrigMatch_0||lep_isTrigMatch_1||lep_isTrigMatch_2||matchDLTll01||matchDLTll02||matchDLTll12)&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))&&nJets_OR>0&&abs(Mlll012-91.2e3)>10e3)"#&&best_Z_other_MtLepMet>10e3&&MET_RefFinal_et>20e3&&lep_Pt_3==0)"
+    srNew = "weight*(trilep_type>0&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&(matchDLTll01||matchDLTll02||matchDLTll12)&&abs(total_charge)==1&&(((lep_ID_0==-lep_ID_1 && ((lep_ID_0==-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0==-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))&&nJets_OR>0)"#&&abs(Mlll012-91.2e3)>10e3&&nJets_OR<3)"#&&best_Z_other_MtLepMet>10e3&&MET_RefFinal_et>20e3&&lep_Pt_3==0)"
 
     iso106 = "60000*scale_nom*pileupEventWeight_090*MV2c10_Continuous_EventWeight*(trilep_type>0&&(lep_Pt_0>10e3&&lep_Pt_1>20e3&&lep_Pt_2>20e3)&&(lep_isTrigMatch_0||lep_isTrigMatch_1||lep_isTrigMatch_2)&&abs(total_charge)==1&&(((lep_ID_0!=-lep_ID_1 && ((lep_ID_0!=-lep_ID_1&&abs(Mll01-91.2e3)<10e3)))||(lep_ID_0!=-lep_ID_2&&abs(Mll02-91.2e3)<10e3)))&&(lep_ID_0!=-lep_ID_1||(Mll01>12e3))&&(lep_ID_0!=-lep_ID_2||(Mll02>12e3))&&( ( (abs(lep_ID_0) == 13 &&lep_isMedium_0) ||( abs( lep_ID_0 ) == 11&&abs( lep_Eta_0 ) <2.0)) && ((abs( lep_ID_1 ) == 11&&abs( lep_Eta_1 ) <2.0)|| (abs(lep_ID_1) == 13 && lep_isMedium_1) ) && ((abs( lep_ID_2 ) == 11&&abs( lep_Eta_2 ) <2.0)||(abs( lep_ID_2 ) == 13 && lep_isMedium_2)))&&abs(Mlll012-91.2e3)>10e3 && (lep_isTrigMatch_0||lep_isTrigMatch_1||lep_isTrigMatch_2)&&((abs(lep_ID_0)==11 && lep_isolationFCLoose_0 && lep_isTightLH_0 && lep_promptLeptonVeto_TagWeight_0<0.0 && lep_ambiguityType_0 == 0)||(abs(lep_ID_0)==13 && lep_isolationFCLoose_0 ))&&((abs(lep_ID_1)==11 && lep_isolationFCLoose_1 && lep_isTightLH_1 && lep_promptLeptonVeto_TagWeight_1<0.0 && lep_ambiguityType_1 == 0)||(abs(lep_ID_1)==13 && lep_isolationFCLoose_1))&&((abs(lep_ID_2)==11 && lep_isolationFCLoose_2 && lep_isTightLH_2 && lep_promptLeptonVeto_TagWeight_2<0.0 && lep_ambiguityType_2 == 0)||(abs(lep_ID_2)==13 && lep_isolationFCLoose_2)))"
 
     varList = []
     #varList.append(Variable("nJets_OR_DL1_70",5,0,5))
+
     varList.append(Variable("nJets_OR",10,0,10))
+
     varList.append(Variable("Mll01",30,0,150000))
     varList.append(Variable("Mll02",30,0,150000))
-    varList.append(Variable("Mll12",30,0,150000))
+    #varList.append(Variable("Mll12",30,0,150000))
     varList.append(Variable("lep_Pt_0",30,0,200000))
     varList.append(Variable("lep_Pt_1",30,0,200000))
     varList.append(Variable("lep_Pt_2",30,0,200000))
@@ -50,7 +53,13 @@ def plot(newFileName, oldFileName, outputName):
     varList.append(Variable("lep_isTrigMatchDLT_0",2,0,2))
     varList.append(Variable("lep_isTrigMatchDLT_1",2,0,2))
     varList.append(Variable("lep_isTrigMatchDLT_2",2,0,2))
-    varList.append(Variable("jet_flavor",3,0,3))
+    '''
+    #varList.append(Variable("jet_flavor",3,0,3))
+    varList.append(Variable("nJets_OR_MV2c10_70",3,0,3))
+    '''
+    varList.append(Variable("matchDLTll01",2,0,2))
+    varList.append(Variable("matchDLTll02",2,0,2))
+    varList.append(Variable("matchDLTll12",2,0,2))
 
     icount = 1
     for var in varList:#, nbins, nmin, nmax in zip(varList, binList, minList, maxList):
@@ -66,6 +75,7 @@ def plot(newFileName, oldFileName, outputName):
 
         newHist = ROOT.TH1F('newHist', 'newHist', var.nbins,var.nmin, var.nmax)
         nomNewA.Draw(var.name+">>newHist", srNew);
+        #nomNewA.Draw(var.name+">>newHist", '2*'+srOld);
         #print(newHist.Integral(), wNew)
         #newHist.Scale(newHist.Integral()/wNew)
         #newHist.Scale(1/wNew)
@@ -150,14 +160,15 @@ def plot(newFileName, oldFileName, outputName):
     print >>texfile, '\end{document}'
     texfile.close()
 
-#plot("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/Nominal/mc16a/364253.root", 
-#     "/data_ceph/afwebb/datasets/remove_duplicates_v8_CB/Sys/mc16a/364253.root",
-#     "WZ_mc16a")
-#plot("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/Nominal/mc16d/364253.root",
+plot("/data_ceph/afwebb/datasets/WZ_ab127/test/364253.root",
+    #"/data_ceph/afwebb/datasets/ab106_WZ/Nominal/mc16a/364253.root",
+     "/data_ceph/afwebb/datasets/remove_duplicates_v8_CB/Sys/mc16a/364253.root",
+     "WZ_mc16a")
+#plot("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/v3/WZtest/WZd.root",
 #     "/data_ceph/afwebb/datasets/remove_duplicates_v8_CB/Sys/mc16d/364253.root",
 #     "WZ_mc16d")
-#plot("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/Nominal/mc16e/364253_select.root",
-##     "/data_ceph/afwebb/datasets/remove_duplicates_v8_CB/Sys/test_mc16e/364253.root",
+#plot("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/v3/WZtest/WZe.root",
+#     "/data_ceph/afwebb/datasets/remove_duplicates_v8_CB/Sys/test_mc16e/364253.root",
 #     "WZ_mc16e")
 #plot("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/Nominal/mc16a/364250.root",
 #     "/data_ceph/afwebb/datasets/remove_duplicates_v8_CB/Sys/mc16a/broke_364250.root",
@@ -168,6 +179,6 @@ def plot(newFileName, oldFileName, outputName):
 #plot("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/Nominal/mc16d/410472.root",
 #     "/data_ceph/afwebb/datasets/remove_duplicates_v8_CB/Sys/mc16d/410472.root",
 #     "ttbar_mc16d")
-plot("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/Nominal/mc16e/364102.root",
-     "/data_ceph/afwebb/datasets/remove_duplicates_v8_CB/Sys/mc16e/364102.root",
-     "ttbar_mc16e")
+#plot("/data_ceph/afwebb/datasets/ab106_WZ/cern_ttW/Nominal/mc16e/364102.root",
+#     "/data_ceph/afwebb/datasets/remove_duplicates_v8_CB/Sys/mc16e/364102.root",
+#     "ttbar_mc16e")

@@ -10,11 +10,6 @@ import sys
 import pickle
 import math
 import numpy as np
-import torch
-from torch import nn, optim
-import torch.nn.functional as F
-from torch.autograd import Variable
-import torch.optim as optim
 from joblib import Parallel, delayed
 import multiprocessing
 import pandas as pd
@@ -52,7 +47,7 @@ def create_dict(nom):
 
         k["topMassReco"] = nom.topMassReco
 
-        k['best_Z_other_MtLepMet'] = nom.best_Z_other_MtLepMet
+        #k['best_Z_other_MtLepMet'] = nom.best_Z_other_MtLepMet
         k['MET'] = nom.met_met
                          
         k['lep_Pt_0'] = nom.lep_Pt_0
@@ -67,11 +62,14 @@ def create_dict(nom):
         k['Mll02'] = nom.Mll02
         k['Mll12'] = nom.Mll12
         
-        k['jets_Pt_0'] = nom.jets_Pt_0                                                               
-        k['nJets_OR_DL1r_60'] = nom.nJets_OR_DL1r_60
-        k['nJets_OR'] = nom.nJets_OR
-
-        k['HT'] = nom.HT
+        k['jet_Pt_0'] = nom.jet_Pt_0                                                                                         
+        k["DeltaR_min_lep_jet"] = nom.DeltaR_min_lep_jet
+        k['minDeltaR_LJ_0'] = nom.minDeltaR_LJ_0                                                                            
+        k['minDeltaR_LJ_1'] = nom.minDeltaR_LJ_1
+        k['minDeltaR_LJ_2'] = nom.minDeltaR_LJ_2
+        k["MtLepMet"] = nom.MtLepMet
+        
+        k['HT'] = nom.HT 
         
         events.append(k)
 
@@ -95,10 +93,16 @@ def run_pred(inputPath):
         print("failed to open")
         return 0
 
+    try:
+        nom.Mll01                                                                                                    
+    except:                                                                                                         
+        print('failed for '+inputPath)
+        return 0
+
     if nom.GetEntries() == 0:
         print("no entries")
         return 0
-    if hasattr(nom, "tZ_score"):                                                                           
+    if hasattr(nom, "tZ_score_test"):                                                                           
         print('alredy there')
         return 0  
     
@@ -107,13 +111,13 @@ def run_pred(inputPath):
     inDF = pd.DataFrame(event_dict)
     
     xgbMat = xgb.DMatrix(inDF, feature_names=list(inDF))
-    tZ_score = xgbModel.predict(xgbMat)
+    tZ_score_test = xgbModel.predict(xgbMat)
     
     with root_open(inputPath, mode='a') as myfile:
-        tZ_score = np.asarray(tZ_score)
-        tZ_score.dtype = [('tZ_score', 'float32')]
-        tZ_score.dtype.names = ['tZ_score']
-        root_numpy.array2tree(tZ_score, tree=myfile.nominal)
+        tZ_score_test = np.asarray(tZ_score_test)
+        tZ_score_test.dtype = [('tZ_score_test', 'float32')]
+        tZ_score_test.dtype.names = ['tZ_score_test']
+        root_numpy.array2tree(tZ_score_test, tree=myfile.nominal)
         
         myfile.write()
         myfile.Close()
